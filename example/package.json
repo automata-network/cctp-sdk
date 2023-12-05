@@ -1,11 +1,52 @@
 {
   "name": "example",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@automata-network/cctp-sdk": "^1.0.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.18.67",
+    "@types/react": "^18.2.42",
+    "@types/react-dom": "^18.2.17",
+    "@web3-onboard/core": "^2.21.2",
+    "@web3-onboard/injected-wallets": "^2.10.10",
+    "@web3-onboard/react": "^2.8.13",
+    "antd": "^5.12.1",
+    "ethers": "^5.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "web-vitals": "^2.1.4"
   },
-  "author": "",
-  "license": "ISC"
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build && rm -rf ../docs && mv build ../docs",
+    "test": "craco test",
+    "eject": "craco eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0"
+  }
 }

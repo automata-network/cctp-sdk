@@ -124,11 +124,7 @@ async function getEthTransactionStatus(options: {
   rpc: string;
   txHash: string;
 }) {
-  const { rpc, txHash } = options;
-
-  const provider = new providers.StaticJsonRpcProvider(rpc);
-
-  const receipt = await provider.getTransactionReceipt(txHash);
+  const receipt = await getEthTransactionReceipt(options);
 
   return receipt && receipt.status != null
     ? receipt.status === 0
@@ -137,6 +133,18 @@ async function getEthTransactionStatus(options: {
     : TransactionStatus.Pending;
 }
 
+export async function getEthTransactionReceipt(options: {
+  rpc: string;
+  txHash: string;
+}) {
+  const { rpc, txHash } = options;
+
+  const provider = new providers.StaticJsonRpcProvider(rpc);
+
+  const receipt = await provider.getTransactionReceipt(txHash);
+
+  return receipt;
+}
 export function parseLog(
   iface: Interface,
   logs: Array<any>,
