@@ -2,6 +2,7 @@
   "name": "@automata-network/cctp-sdk",
   "version": "1.0.0",
   "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "rollup -c -w",
     "build": "NODE_ENV=production rollup -c",
@@ -19,7 +20,7 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
-    "ethers": "^5.0.0",
+    "ethers": "^5.6.8",
     "lodash": "^4.17.21"
   },
   "description": "An SDK to integrate with Circle CCTP"
