@@ -10,14 +10,47 @@ import {
   Typography,
   notification,
 } from "antd";
-import { CCTPDomain, CCTPSdk } from "@automata-network/cctp-sdk";
+import {
+  CCTPDomain,
+  CCTPSdk,
+  defaultConfigs,
+} from "@automata-network/cctp-sdk";
 import { init, useConnectWallet, useSetChain } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 import { Contract, ethers, providers } from "ethers";
 import { LoadingOutlined, WalletOutlined } from "@ant-design/icons";
 import ERC20Abi from "./ERC20.json";
 
-const testnetSdk = CCTPSdk().testnet();
+const testnetSdk = CCTPSdk({
+  mainnet: {
+    irisApiHost: defaultConfigs.mainnet.irisApiHost,
+    networks: [
+      {
+        domain: CCTPDomain.Avalanche,
+        usdcContractAddress: "0x5425890298aed601595a70ab815c96711a31bc65",
+        cctpMessageTransmitterContractAddress:
+          "0xa9fb1b3009dcb79e2fe346c16a604b8fa8ae0a79",
+        cctpMessengerContractAddress:
+          "0xeb08f243e5d3fcff26a9e38ae5520a669f4019d0",
+        rpc: "https://rpc.ankr.com/avalanche_fuji",
+      },
+    ],
+  },
+  testnet: {
+    irisApiHost: defaultConfigs.testnet.irisApiHost,
+    networks: [
+      {
+        domain: CCTPDomain.Avalanche,
+        usdcContractAddress: "0x5425890298aed601595a70ab815c96711a31bc65",
+        cctpMessageTransmitterContractAddress:
+          "0xa9fb1b3009dcb79e2fe346c16a604b8fa8ae0a79",
+        cctpMessengerContractAddress:
+          "0xeb08f243e5d3fcff26a9e38ae5520a669f4019d0",
+        rpc: "https://rpc.ankr.com/avalanche_fuji",
+      },
+    ],
+  },
+}).testnet();
 
 const injected = injectedModule();
 
