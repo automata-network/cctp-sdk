@@ -64,7 +64,7 @@ await testnetSdk.fetchAttestation();
 await testnetSdk.mintUSDC();
 ```
 
-see [here](./packages/sdk/src/sdk.ts#219) for more details
+see [here](./packages/sdk/src/sdk.ts#L219) for more details
 
 ---
 
