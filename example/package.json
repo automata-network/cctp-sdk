@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build && rm -rf ../docs && mv build ../docs",
+    "build": "PUBLIC_URL='./' craco build && rm -rf ../docs && mv build ../docs",
     "test": "craco test",
     "eject": "craco eject"
   },
