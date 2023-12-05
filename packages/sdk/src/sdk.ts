@@ -30,16 +30,16 @@ interface CCTPSdkNetworkConfigs {
 }
 
 interface CCTPSdkConfigsSet {
-  irisApiHost?: string;
-  networks?: CCTPSdkNetworkConfigs[];
+  irisApiHost: string;
+  networks: CCTPSdkNetworkConfigs[];
 }
 
 interface CCTPSdkConfigs {
-  mainnet?: CCTPSdkConfigsSet;
-  testnet?: CCTPSdkConfigsSet;
+  mainnet: CCTPSdkConfigsSet;
+  testnet: CCTPSdkConfigsSet;
 }
 
-const defaultConfigs: CCTPSdkConfigs = {
+export const defaultConfigs: CCTPSdkConfigs = {
   testnet: {
     irisApiHost: "https://iris-api-sandbox.circle.com",
     networks: [
@@ -315,7 +315,7 @@ async function transferUSDC(options: TransferUSDCOptions) {
   });
 }
 
-interface ApproveUSDCOptions {
+export interface ApproveUSDCOptions {
   signer: Signer;
   amount: number | string | ethers.BigNumber;
   sourceDomain: number;

@@ -1,1 +1,11 @@
-export { CCTPDomain, CCTPSdk, TransferUSDCOptions } from "./sdk";
+export {
+  CCTPDomain,
+  CCTPSdk,
+  TransferUSDCOptions,
+  ApproveUSDCOptions,
+  BurnUSDCOptions,
+  GetMessageBytesOptions,
+  FetchSignatureOptions,
+  MintUSDCOptions,
+  defaultConfigs,
+} from "./sdk";
