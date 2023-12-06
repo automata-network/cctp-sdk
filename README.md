@@ -15,7 +15,7 @@ import { CCTPDomain, CCTPSdk } from "@automata-network/cctp-sdk";
 
 const testnetSdk = CCTPSdk().testnet();
 
-await testnetSdk.transferUSDC({
+const result = await testnetSdk.transferUSDC({
   signer, // your signer
   sourceDomain: CCTPDomain.Ethereum
   destinationDomain: CCTPDomain.Avalanche,
@@ -107,6 +107,16 @@ const testnetSdk = CCTPSdk({
     ],
   },
 }).testnet();
+```
+
+---
+
+check if the transfer is completed
+
+```typescript
+const isTransferCompleted = await testnetSdk.isTransferCompleted({
+  messageBytes: result.messageBytes, // messageBytes is from testnetSdk.transferUSDC, or testnetSdk.getMessageBytes
+});
 ```
 
 # LICENSE
