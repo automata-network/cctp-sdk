@@ -10,7 +10,11 @@ import {
   Typography,
   notification,
 } from "antd";
-import { CCTPDomain, CCTPSdk } from "@automata-network/cctp-sdk";
+import {
+  CCTPDomain,
+  CCTPSdk,
+  TransferUSDCResult,
+} from "@automata-network/cctp-sdk";
 import { init, useConnectWallet, useSetChain } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 import { Contract, ethers, providers } from "ethers";
@@ -111,6 +115,11 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
   const sourceChain = Form.useWatch("sourceChain", form);
   const [balance, setBalance] = useState<string>();
+  const [result, setResult] = useState<{
+    sourceDomain: CCTPDomain;
+    transferResult: TransferUSDCResult;
+  }>();
+  const [checkingStatus, setCheckingStatus] = useState<boolean>();
 
   async function getUSDCBalance(chain: string, walletAddress?: string) {
     setBalance(undefined);
@@ -129,7 +138,7 @@ function App() {
     const contract = new Contract(
       cctpConfigs?.usdcContractAddress,
       ERC20Abi,
-      new providers.JsonRpcProvider(chainConfigs?.rpcUrl)
+      new providers.StaticJsonRpcProvider(chainConfigs?.rpcUrl)
     );
 
     const balance = await contract.balanceOf(walletAddress);
@@ -187,7 +196,7 @@ function App() {
             try {
               setSubmitting(true);
 
-              await testnetSdk.transferUSDC({
+              const result = await testnetSdk.transferUSDC({
                 signer,
                 sourceDomain: CCTPDomain[values.sourceChain as any] as any,
                 destinationDomain: CCTPDomain[
@@ -245,6 +254,11 @@ function App() {
                 beforeMintUSDC: async () => {
                   await setChainByCCTPDomain(values.destinationChain);
                 },
+              });
+
+              setResult({
+                sourceDomain: CCTPDomain[values.sourceChain as any] as any,
+                transferResult: result,
               });
 
               notification.destroy("processTips");
@@ -321,9 +335,46 @@ function App() {
           >
             <Input type="number" addonAfter="USDC" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" loading={submitting} block>
-            Transfer USDC
-          </Button>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={submitting} block>
+              Transfer USDC
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            <Button
+              disabled={!result}
+              loading={checkingStatus}
+              block
+              onClick={async () => {
+                if (result) {
+                  console.log("result", result);
+                  setCheckingStatus(true);
+
+                  try {
+                    const isTransferCompleted =
+                      await testnetSdk.isTransferCompleted({
+                        sourceDomain: result.sourceDomain,
+                        burnTxHash: result.transferResult.burnTxHash,
+                      });
+
+                    if (isTransferCompleted) {
+                      notification.success({
+                        message: "Your transaction is completed",
+                      });
+                    } else {
+                      notification.error({
+                        message: "Your transaction is not completed",
+                      });
+                    }
+                  } finally {
+                    setCheckingStatus(false);
+                  }
+                }
+              }}
+            >
+              Check transfer status on chain
+            </Button>
+          </Form.Item>
         </Form>
       </Layout.Content>
     </Layout>
