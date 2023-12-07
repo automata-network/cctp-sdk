@@ -435,7 +435,7 @@ async function getMessageBytes(options: GetMessageBytesOptions) {
   const messageBytes = messageSentLogs?.parsedLog.args.message;
   const messageHash = keccak256(messageBytes);
 
-  return { messageBytes, messageHash };
+  return { messageBytes, messageHash, burnTx };
 }
 
 export interface FetchAttestationOptions {
