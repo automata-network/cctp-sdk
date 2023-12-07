@@ -117,14 +117,19 @@ export async function fetchAttestation(options: {
   const { apiHost, messageHash } = options;
 
   const response = await fetch(`${apiHost}/attestations/${messageHash}`);
-  const attestationResponse = await response.json();
 
-  if (
-    attestationResponse &&
-    attestationResponse.status === "complete" &&
-    attestationResponse.attestation
-  ) {
-    return attestationResponse.attestation;
+  if (response.status === 200) {
+    const attestationResponse = await response.json();
+
+    if (
+      attestationResponse &&
+      attestationResponse.status === "complete" &&
+      attestationResponse.attestation
+    ) {
+      return attestationResponse.attestation;
+    }
+  } else {
+    throw new Error(`get circle iris api failed. status: ${response.status}`);
   }
 }
 
