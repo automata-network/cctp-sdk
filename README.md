@@ -57,7 +57,11 @@ await testnetSdk.burnUSDC();
 // step3: getMessageBytes
 await testnetSdk.getMessageBytes();
 
-// step4: fetchAttestation
+// step4: waitForAttestation
+await testnetSdk.waitForAttestation();
+
+// or you can fetch attestation without result check and retry
+
 await testnetSdk.fetchAttestation();
 
 // step5: mintUSDC
