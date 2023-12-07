@@ -194,8 +194,8 @@ function generateActions(configsSet: CCTPSdkConfigsSet) {
     burnUSDC: (options: Omit<BurnUSDCOptions, "configsSet">) => {
       return burnUSDC({ configsSet, ...options });
     },
-    getMessageBytes: (options: GetMessageBytesOptions) => {
-      return getMessageBytes(options);
+    getMessageBytes: (options: Omit<GetMessageBytesOptions, "configsSet">) => {
+      return getMessageBytes({ configsSet, ...options });
     },
     fetchAttestation: (options: Omit<FetchSignatureOptions, "configsSet">) => {
       return fetchSignature({ configsSet, ...options });
