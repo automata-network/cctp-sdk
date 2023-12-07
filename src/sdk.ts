@@ -1,6 +1,7 @@
 import { BigNumber, Signer, providers } from "ethers";
 import merge from "lodash/merge";
 import {
+  fetchAttestation,
   getEthTransactionReceipt,
   getMessageTransmitterContract,
   getTokenMessengerContract,
@@ -194,11 +195,18 @@ function generateActions(configsSet: CCTPSdkConfigsSet) {
     burnUSDC: (options: Omit<BurnUSDCOptions, "configsSet">) => {
       return burnUSDC({ configsSet, ...options });
     },
-    getMessageBytes: (options: GetMessageBytesOptions) => {
-      return getMessageBytes(options);
+    getMessageBytes: (options: Omit<GetMessageBytesOptions, "configsSet">) => {
+      return getMessageBytes({ configsSet, ...options });
     },
-    fetchAttestation: (options: Omit<FetchSignatureOptions, "configsSet">) => {
-      return fetchSignature({ configsSet, ...options });
+    fetchAttestation: (
+      options: Omit<FetchAttestationOptions, "configsSet">
+    ) => {
+      return _fetchAttestation({ configsSet, ...options });
+    },
+    waitForAttestation: (
+      options: Omit<FetchAttestationOptions, "configsSet">
+    ) => {
+      return _waitForAttestation({ configsSet, ...options });
     },
     mintUSDC: (options: Omit<MintUSDCOptions, "configsSet">) => {
       return mintUSDC({ configsSet, ...options });
@@ -311,7 +319,7 @@ async function transferUSDC(
     onFetchAttestation();
   }
 
-  const attestationSignature = await fetchSignature({
+  const attestationSignature = await _fetchAttestation({
     configsSet,
     messageHash,
   });
@@ -430,12 +438,25 @@ async function getMessageBytes(options: GetMessageBytesOptions) {
   return { messageBytes, messageHash };
 }
 
-export interface FetchSignatureOptions {
+export interface FetchAttestationOptions {
   configsSet: CCTPSdkConfigsSet;
   messageHash: string;
 }
 
-async function fetchSignature(options: FetchSignatureOptions) {
+async function _fetchAttestation(options: FetchAttestationOptions) {
+  const { configsSet, messageHash } = options;
+
+  if (!configsSet.irisApiHost) {
+    throw new Error(`can't find irisApiHost`);
+  }
+
+  return fetchAttestation({
+    apiHost: configsSet.irisApiHost,
+    messageHash,
+  });
+}
+
+async function _waitForAttestation(options: FetchAttestationOptions) {
   const { configsSet, messageHash } = options;
 
   if (!configsSet.irisApiHost) {

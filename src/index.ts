@@ -6,7 +6,7 @@ export {
   ApproveUSDCOptions,
   BurnUSDCOptions,
   GetMessageBytesOptions,
-  FetchSignatureOptions,
+  FetchAttestationOptions,
   MintUSDCOptions,
   defaultConfigs,
 } from "./sdk";
