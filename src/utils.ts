@@ -97,24 +97,35 @@ export async function waitForAttestation(options: {
   apiHost: string;
   messageHash: string;
 }) {
-  const { apiHost, messageHash } = options;
-
   return waitFor<string>({
     callback: async (next, resolve, reject) => {
-      const response = await fetch(`${apiHost}/attestations/${messageHash}`);
-      const attestationResponse = await response.json();
+      const attestation = await fetchAttestation(options);
 
-      if (
-        attestationResponse &&
-        attestationResponse.status === "complete" &&
-        attestationResponse.attestation
-      ) {
-        resolve(attestationResponse.attestation);
+      if (attestation) {
+        resolve(attestation);
       } else {
         next();
       }
     },
   });
+}
+
+export async function fetchAttestation(options: {
+  apiHost: string;
+  messageHash: string;
+}) {
+  const { apiHost, messageHash } = options;
+
+  const response = await fetch(`${apiHost}/attestations/${messageHash}`);
+  const attestationResponse = await response.json();
+
+  if (
+    attestationResponse &&
+    attestationResponse.status === "complete" &&
+    attestationResponse.attestation
+  ) {
+    return attestationResponse.attestation;
+  }
 }
 
 enum TransactionStatus {
