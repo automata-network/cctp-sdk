@@ -121,6 +121,7 @@ export async function fetchAttestation(options: {
   const responseError = new Error(
     `get circle iris api failed. status: ${response.status}`
   );
+
   if (response.status === 200) {
     const attestationResponse = await response.json();
 
@@ -137,7 +138,7 @@ export async function fetchAttestation(options: {
 
       // if response status is 404, and the error is message hash not found
       // we don't see it as an error, return empty attestation
-      if (attestationResponse.errorr === "Message hash not found") {
+      if (attestationResponse.error === "Message hash not found") {
         return;
       }
     } catch (e) {
