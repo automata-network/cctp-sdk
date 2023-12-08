@@ -131,6 +131,8 @@ export async function fetchAttestation(options: {
       attestationResponse.attestation
     ) {
       return attestationResponse.attestation;
+    } else {
+      return;
     }
   } else if (response.status === 404) {
     try {
